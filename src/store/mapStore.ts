@@ -2,6 +2,11 @@ import { type DBSchema, type IDBPDatabase, deleteDB, openDB } from "idb";
 import { compareText } from "../i18n";
 import { normalizeDoc } from "../model/normalize";
 import type { MapNode, MindMapDoc } from "../model/types";
+import {
+  permanentlyDeleteMapFromCloud,
+  restoreMapInCloud,
+  softDeleteMapFromCloud,
+} from "../cloud/mapCloudStore";
 
 // Local-first multi-map library. Each map is stored under its id; a small `meta`
 // store remembers the last-opened map so startup restores where you left off; a
@@ -88,9 +93,18 @@ export async function loadMap(id: string): Promise<MindMapDoc | null> {
 
 export async function deleteMap(id: string): Promise<void> {
   await (await db()).delete("maps", id);
-  await deleteVersionsForMap(id); // a deleted map's history goes with it
-  await deleteMapHandle(id); // and its disk-file binding
-  await deleteRecentFile(id); // and its Open-Recent entry
+  await deleteVersionsForMap(id);
+  await deleteMapHandle(id);
+  await deleteRecentFile(id);
+
+  try {
+    await permanentlyDeleteMapFromCloud(id);
+  } catch (error) {
+    console.warn(
+      "Mapa excluído localmente, mas a exclusão definitiva na nuvem falhou.",
+      error,
+    );
+  }
 }
 
 // --- trash (soft-delete) ---------------------------------------------------
@@ -103,17 +117,43 @@ export async function deleteMap(id: string): Promise<void> {
 export async function softDeleteMap(id: string): Promise<void> {
   const doc = (await (await db()).get("maps", id)) ?? null;
   if (!doc) return;
-  const trashed: MindMapDoc = { ...doc, meta: { ...doc.meta, trashedAt: Date.now() } };
+
+  const trashedAt = Date.now();
+  const trashed: MindMapDoc = {
+    ...doc,
+    meta: { ...doc.meta, trashedAt },
+  };
+
   await (await db()).put("maps", trashed, id);
+
+  try {
+    await softDeleteMapFromCloud(id);
+  } catch (error) {
+    console.warn(
+      "Mapa enviado para a lixeira local, mas a sincronização com a nuvem falhou.",
+      error,
+    );
+  }
 }
 
 /** Restore a map from the Trash (clears its trashed flag); preserves its last-edited time. */
 export async function restoreMapFromTrash(id: string): Promise<void> {
   const doc = (await (await db()).get("maps", id)) ?? null;
   if (!doc?.meta?.trashedAt) return;
+
   const meta = { ...doc.meta };
   meta.trashedAt = undefined;
+
   await (await db()).put("maps", { ...doc, meta }, id);
+
+  try {
+    await restoreMapInCloud(id);
+  } catch (error) {
+    console.warn(
+      "Mapa restaurado localmente, mas a restauração na nuvem falhou.",
+      error,
+    );
+  }
 }
 
 /** Maps currently in the Trash, most-recently-trashed first. */

@@ -1,4 +1,5 @@
 import { type Catalogue, registerMessages } from "../i18n/registry";
+import "./messages.pt-BR";
 
 // English messages for IMPORT/EXPORT — the failures an adapter reports, and the chrome baked into the
 // artifacts we generate.

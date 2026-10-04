@@ -1,4 +1,5 @@
 import { type Catalogue, registerMessages } from "../../i18n/registry";
+import "./messages.pt-BR";
 
 // English messages for the CANVAS — the topic node, its affordances and the on-canvas menus.
 //

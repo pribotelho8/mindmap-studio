@@ -1,11 +1,12 @@
 import { type RefObject, useCallback, useEffect, useRef, useState } from "react";
 import type { MindMapDoc } from "../model/types";
 import { saveMap, setLastOpened } from "../store/mapStore";
+import { saveMapToCloud } from "../cloud/mapCloudStore";
 
 /** The live autosave status, surfaced in the toolbar badge so "Saved locally" can't lie: `saving`
  *  while a debounced/in-flight write is pending, `saved` once it lands, `error` if the write throws
  *  (quota exceeded / private-mode / disk full) instead of silently swallowing it. */
-export type SaveState = "idle" | "saving" | "saved" | "error";
+export type SaveState = "idle" | "saving" | "saved" | "offline" | "cloudError" | "error";
 
 // The IndexedDB autosave path: a debounced write-through of the live doc to the library (the always-on
 // safety net), plus the guards that keep an edit from being lost on tab close. Lifted out of App so the
@@ -39,9 +40,24 @@ export function useIdbAutosave({ liveDocRef, dirtyRef, refreshMaps, maybeSnapsho
         await saveMap(d);
         await setLastOpened(d.id);
         await refreshMaps();
+
+        // Local-first: IndexedDB continua sendo a primeira camada de segurança.
+        // A sincronização com a nuvem acontece depois e não bloqueia o salvamento local.
+        let finalState: SaveState = "saved";
+
+        try {
+          await saveMapToCloud(d);
+        } catch (cloudError) {
+          finalState = navigator.onLine ? "cloudError" : "offline";
+
+          console.warn(
+            "Mapa salvo localmente, mas a sincronização com a nuvem falhou.",
+            cloudError,
+          );
+        }
         // Edit-driven saves feed the version-history auto-snapshot (throttle lives inside that hook).
         if (snapshot) maybeSnapshot(d);
-        setSaveState("saved");
+        setSaveState(finalState);
       } catch {
         // Don't swallow it silently — a quota/private-mode failure must reach the badge so the user
         // doesn't trust "Saved locally" while nothing persisted.

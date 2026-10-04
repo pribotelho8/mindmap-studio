@@ -28,6 +28,7 @@
     "i18n:blindspot": "node scripts/i18n-blindspot.mjs"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.117.2",
     "@xyflow/react": "^12.11.0",
     "d3-hierarchy": "^3.1.2",
     "fast-xml-parser": "^4.5.1",

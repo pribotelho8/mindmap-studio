@@ -10,6 +10,7 @@
 // `registerMessages` from `./registry` directly — importing this barrel instead would drag the eager
 // core catalogue into that chunk.
 import "./core";
+import "./pt-BR/core";
 import { initLocale } from "./registry";
 
 // RESOLVE THE LOCALE HERE, not in main.tsx, and for the same reason the catalogue import is here.

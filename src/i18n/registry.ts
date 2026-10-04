@@ -27,7 +27,7 @@ export type Catalogue = Readonly<Record<string, Message>>;
 
 /** Locales the app can resolve to. English only for now — adding one means adding it here and shipping
  *  a JSON catalogue for it; nothing else in this module changes. */
-export const LOCALES = ["en"] as const;
+export const LOCALES = ["en", "pt-BR"] as const;
 export type Locale = (typeof LOCALES)[number];
 
 export const DEFAULT_LOCALE: Locale = "en";
@@ -73,7 +73,13 @@ export function resolveLocale(): Locale {
   const preferred = typeof navigator === "undefined" ? [] : (navigator.languages ?? []);
   for (const tag of preferred) {
     // Match the base language, so "en-GB" and "en-US" both resolve to "en".
-    const base = tag.toLowerCase().split("-")[0];
+    const normalized = tag.toLowerCase();
+
+    if (normalized.startsWith("pt")) {
+      return "pt-BR";
+    }
+
+    const base = normalized.split("-")[0];
     const hit = LOCALES.find((l) => l === base);
     if (hit) return hit;
   }

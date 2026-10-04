@@ -1,4 +1,5 @@
 import { type Catalogue, registerMessages } from "../i18n/registry";
+import "./presentMessages.pt-BR";
 
 // English messages for PRESENTATION mode. Chunk-local: presentation is its own lazy chunk
 // (Presentation-*.js), so these cost the entry bundle nothing.

@@ -1,4 +1,5 @@
 import { type Catalogue, registerMessages } from "../../i18n/registry";
+import "./messages.pt-BR";
 
 // English messages for the START SCREEN — the library, capture card, template/example galleries,
 // sidebar, map cards and the map dialogs.

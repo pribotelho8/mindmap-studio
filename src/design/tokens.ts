@@ -19,8 +19,8 @@
 import type { CSSProperties } from "react";
 
 /** Emerald brand accent — fixed across all canvas themes (matches the start screen). */
-export const EDITOR_ACCENT = "#1b8a5e";
-export const EDITOR_ACCENT_HOVER = "#15714d";
+export const EDITOR_ACCENT = "#0B2F63";
+export const EDITOR_ACCENT_HOVER = "#08254E";
 
 /** UI font stacks — system sans (matches index.html) + a mono stack that prefers JetBrains Mono if
  *  the user has it installed but never loads a web font (the product is offline-first). Mirrors the
@@ -33,9 +33,9 @@ export const EDITOR_FONT_MONO = '"JetBrains Mono", ui-monospace, SFMono-Regular,
  *  so the chrome can be dark over a light canvas and vice-versa. Chrome surfaces are neutral light/dark
  *  values; the emerald accent is constant. Consumed by editor.css + the redesigned chrome components. */
 export function editorThemeVars(dark: boolean, highContrast = false): CSSProperties {
-  const page = dark ? "#1d1c22" : "#faf9f5";
-  const card = dark ? "#2a2930" : "#ffffff";
-  const ink = dark ? "#e8e6df" : "#23211c";
+  const page = dark ? "#111B2B" : "#F8F1E7";
+  const card = dark ? "#182538" : "#FFFCF7";
+  const ink = dark ? "#F4EEE6" : "#14243A";
   // High-contrast mode (OS `prefers-contrast: more` / `forced-colors`, or the explicit toggle): push
   // the neutral chrome tokens to their extremes so borders, dividers and secondary text stop being
   // subtle — max-contrast ink, hard black/white borders, and a denser accent focus ring. Surfaces
@@ -79,27 +79,27 @@ export function editorThemeVars(dark: boolean, highContrast = false): CSSPropert
   return {
     "--ed-page": page,
     "--ed-card": card,
-    "--ed-sidebar": dark ? "#16151d" : "#f4f2ec",
-    "--ed-border": dark ? "rgba(255,255,255,0.11)" : "#e7e4dc",
-    "--ed-divider": dark ? "rgba(255,255,255,0.06)" : "#efece4",
+    "--ed-sidebar": dark ? "#0B1728" : "#F3E9DC",
+    "--ed-border": dark ? "rgba(196,147,56,0.22)" : "#E3D4C1",
+    "--ed-divider": dark ? "rgba(255,255,255,0.07)" : "#EDE2D4",
     "--ed-ink": ink,
-    "--ed-ink2": dark ? "#bdb8ad" : "#5c574e",
+    "--ed-ink2": dark ? "#C9C2B8" : "#49566A",
     // Light-mode muted/faint darkened to meet WCAG AA (4.5:1) on the near-white card/page — the old
     // #938d81 (3.3:1) / #b6b0a4 (2.2:1) failed for body text. Kept as light as compliance allows, warm
     // hue + muted-darker-than-faint preserved. Dark mode (light-on-dark, already high-contrast) unchanged.
-    "--ed-muted": dark ? "#8f8a80" : "#706a5f",
-    "--ed-faint": dark ? "#6d695f" : "#7a7468",
+    "--ed-muted": dark ? "#999EAA" : "#676159",
+    "--ed-faint": dark ? "#737987" : "#81786E",
     "--ed-accent": EDITOR_ACCENT,
     "--ed-accent-hover": EDITOR_ACCENT_HOVER,
-    "--ed-accent-tint": dark ? "rgba(27,138,94,0.18)" : "rgba(27,138,94,0.10)",
-    "--ed-accent-ring": "rgba(27,138,94,0.30)",
+    "--ed-accent-tint": dark ? "rgba(11,47,99,0.38)" : "rgba(11,47,99,0.10)",
+    "--ed-accent-ring": "rgba(11,47,99,0.28)",
     "--ed-danger": "#b23b3a",
     // Toast + import-banner strips — theme-reactive so feedback isn't a pale light box on a dark
     // canvas (the legacy hardcoded hex are kept as fallbacks where --ed-* isn't in scope, e.g. the
     // Start-screen floating toast). Light values match the old static colors.toast palette.
     "--ed-toast-ink": dark ? "#dfe7f2" : "#26215c",
     "--ed-toast-border": dark ? "rgba(255,255,255,0.12)" : "#cecbf6",
-    "--ed-toast-success-bg": dark ? "rgba(27,138,94,0.18)" : "#eafaf0",
+    "--ed-toast-success-bg": dark ? "rgba(11,47,99,0.28)" : "#E9EFF7",
     "--ed-toast-info-bg": dark ? "rgba(90,110,170,0.20)" : "#eef2fc",
     "--ed-toast-error-bg": dark ? "rgba(178,59,58,0.22)" : "#fcebeb",
     "--ed-toast-error-ink": dark ? "#f1b8b6" : "#791f1f",
@@ -107,8 +107,8 @@ export function editorThemeVars(dark: boolean, highContrast = false): CSSPropert
     "--ed-toast-warn-bg": dark ? "rgba(154,120,30,0.24)" : "#faeeda",
     "--ed-toast-warn-ink": dark ? "#e8cfa0" : "#633806",
     "--ed-toast-warn-border": dark ? "rgba(214,170,80,0.46)" : "#fac775",
-    "--ed-shadow": dark ? "0 6px 22px rgba(0,0,0,0.38)" : "0 6px 22px rgba(40,30,16,0.08)",
-    "--ed-shadow-pop": dark ? "0 12px 32px rgba(0,0,0,0.5)" : "0 12px 32px rgba(40,30,16,0.18)",
+    "--ed-shadow": dark ? "0 6px 22px rgba(0,0,0,0.38)" : "0 6px 22px rgba(55,38,18,0.09)",
+    "--ed-shadow-pop": dark ? "0 12px 32px rgba(0,0,0,0.5)" : "0 12px 32px rgba(55,38,18,0.16)",
     // Motion timings (not theme-dependent — same in light/dark; emitted here so editor.css transitions
     // read one source instead of scattered `0.12s` literals).
     "--ed-dur-fast": `${motion.dur.fast}ms`,
@@ -151,11 +151,11 @@ export const colors = {
   /** Control fill (the toolbar button look). */
   controlBg: "var(--ed-sidebar, #f4f2ec)",
   /** Accent — active chip background + border, the lit toggle state (emerald). */
-  accent: "var(--ed-accent, #1b8a5e)",
+  accent: "var(--ed-accent, #0B2F63)",
   /** Accent used as the history-timeline range slider tint. */
-  accentSlider: "var(--ed-accent, #1b8a5e)",
+  accentSlider: "var(--ed-accent, #0B2F63)",
   /** Active marker chip background (a soft emerald tint, distinct from the solid accent fill). */
-  accentTint: "var(--ed-accent-tint, #e3f1ea)",
+  accentTint: "var(--ed-accent-tint, #E6ECF4)",
   /** Destructive action colour (delete confirms, danger buttons). */
   danger: "var(--ed-danger, #b23b3a)",
 

@@ -1,4 +1,5 @@
 import { type Catalogue, registerMessages } from "../i18n/registry";
+import "./themeDesignerMessages.pt-BR";
 
 // English messages for the THEME DESIGNER dialog. Chunk-local: the dialog is its own lazy chunk
 // (ThemeDesignerDialog-*.js), so these cost the entry bundle nothing.
