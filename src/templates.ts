@@ -20,18 +20,18 @@ function doc(title: string, children: MapNode[]): MindMapDoc {
 }
 
 export const templates: MapTemplate[] = [
-  { id: "blank", name: "Blank", build: () => doc("Untitled map", []) },
+  { id: "blank", name: "Em branco", build: () => doc("Mapa sem título", []) },
   {
     id: "brainstorm",
-    name: "Brainstorm",
+    name: "Brainstorming",
     build: () =>
-      doc("New idea", [
-        leaf("who", "Who"),
-        leaf("what", "What"),
-        leaf("why", "Why"),
-        leaf("how", "How"),
-        leaf("when", "When"),
-        leaf("where", "Where"),
+      doc("Nova ideia", [
+        leaf("who", "Quem"),
+        leaf("what", "O quê"),
+        leaf("why", "Por quê"),
+        leaf("how", "Como"),
+        leaf("when", "Quando"),
+        leaf("where", "Onde"),
       ]),
   },
   {
@@ -39,49 +39,49 @@ export const templates: MapTemplate[] = [
     name: "SWOT",
     build: () =>
       doc("SWOT", [
-        leaf("s", "Strengths"),
-        leaf("w", "Weaknesses"),
-        leaf("o", "Opportunities"),
-        leaf("t", "Threats"),
+        leaf("s", "Forças"),
+        leaf("w", "Fraquezas"),
+        leaf("o", "Oportunidades"),
+        leaf("t", "Ameaças"),
       ]),
   },
   {
     id: "project",
-    name: "Project plan",
+    name: "Plano de projeto",
     build: () =>
-      doc("Project", [
-        leaf("g", "Goals"),
-        leaf("sc", "Scope"),
-        leaf("ms", "Milestones"),
-        leaf("rk", "Risks"),
-        leaf("tm", "Team"),
+      doc("Projeto", [
+        leaf("g", "Objetivos"),
+        leaf("sc", "Escopo"),
+        leaf("ms", "Marcos"),
+        leaf("rk", "Riscos"),
+        leaf("tm", "Equipe"),
       ]),
   },
   {
     id: "five-whys",
-    name: "5 Whys (root cause)",
+    name: "5 Porquês (causa raiz)",
     build: () =>
-      doc("5 Whys", [
+      doc("5 Porquês", [
         {
           id: "problem",
-          topic: "Problem statement",
+          topic: "Definição do problema",
           children: [
             {
               id: "w1",
-              topic: "Why? (1)",
+              topic: "Por quê? (1)",
               children: [
                 {
                   id: "w2",
-                  topic: "Why? (2)",
+                  topic: "Por quê? (2)",
                   children: [
                     {
                       id: "w3",
-                      topic: "Why? (3)",
+                      topic: "Por quê? (3)",
                       children: [
                         {
                           id: "w4",
-                          topic: "Why? (4)",
-                          children: [leaf("w5", "Why? (5) → root cause")],
+                          topic: "Por quê? (4)",
+                          children: [leaf("w5", "Por quê? (5) → causa raiz")],
                         },
                       ],
                     },
@@ -95,116 +95,116 @@ export const templates: MapTemplate[] = [
   },
   {
     id: "decision",
-    name: "Decision (pros & cons)",
+    name: "Decisão (prós e contras)",
     build: () =>
-      doc("Decision", [
-        leaf("context", "Context"),
-        leaf("options", "Options"),
-        leaf("pros", "Pros"),
-        leaf("cons", "Cons"),
-        leaf("criteria", "Criteria"),
+      doc("Decisão", [
+        leaf("context", "Contexto"),
+        leaf("options", "Opções"),
+        leaf("pros", "Prós"),
+        leaf("cons", "Contras"),
+        leaf("criteria", "Critérios"),
         leaf("choice", "Decision"),
       ]),
   },
   {
     id: "retrospective",
-    name: "Retrospective",
+    name: "Retrospectiva",
     build: () =>
-      doc("Retrospective", [
-        leaf("start", "Start"),
-        leaf("stop", "Stop"),
-        leaf("continue", "Continue"),
-        leaf("actions", "Action items"),
+      doc("Retrospectiva", [
+        leaf("start", "Começar"),
+        leaf("stop", "Parar"),
+        leaf("continue", "Continuar"),
+        leaf("actions", "Itens de ação"),
       ]),
   },
   {
     id: "meeting",
-    name: "Meeting notes",
+    name: "Notas de reunião",
     build: () =>
-      doc("Meeting", [
-        leaf("agenda", "Agenda"),
-        leaf("attendees", "Attendees"),
-        leaf("decisions", "Decisions"),
-        leaf("actions", "Action items"),
-        leaf("notes", "Notes"),
+      doc("Reunião", [
+        leaf("agenda", "Pauta"),
+        leaf("attendees", "Participantes"),
+        leaf("decisions", "Decisões"),
+        leaf("actions", "Itens de ação"),
+        leaf("notes", "Notas"),
       ]),
   },
   {
     id: "pre-mortem",
-    name: "Pre-mortem",
+    name: "Pré-mortem",
     build: () =>
       doc("Pre-mortem", [
-        leaf("goal", "The goal"),
-        leaf("failed", "Imagine it failed"),
-        leaf("why", "Why it failed"),
-        leaf("signs", "Early warning signs"),
-        leaf("prevent", "Preventive actions"),
+        leaf("goal", "O objetivo"),
+        leaf("failed", "Imagine que deu errado"),
+        leaf("why", "Por que deu errado"),
+        leaf("signs", "Sinais de alerta"),
+        leaf("prevent", "Ações preventivas"),
       ]),
   },
   {
     id: "pestle",
     name: "PESTLE",
     build: () =>
-      doc("PESTLE analysis", [
-        leaf("political", "Political"),
-        leaf("economic", "Economic"),
+      doc("Análise PESTLE", [
+        leaf("political", "Político"),
+        leaf("economic", "Econômico"),
         leaf("social", "Social"),
-        leaf("technological", "Technological"),
+        leaf("technological", "Tecnológico"),
         leaf("legal", "Legal"),
-        leaf("environmental", "Environmental"),
+        leaf("environmental", "Ambiental"),
       ]),
   },
   {
     id: "fishbone",
-    name: "Fishbone (cause & effect)",
+    name: "Espinha de peixe (causa e efeito)",
     // The spine is the effect; the branches are the classic 6M cause categories. Switch to the
     // Fishbone layout (Layout menu) to draw it as the herringbone diagram.
     build: () =>
-      doc("Effect / problem", [
-        leaf("people", "People"),
-        leaf("process", "Process"),
-        leaf("equipment", "Equipment"),
-        leaf("materials", "Materials"),
-        leaf("environment", "Environment"),
-        leaf("management", "Management"),
+      doc("Efeito / problema", [
+        leaf("people", "Pessoas"),
+        leaf("process", "Processo"),
+        leaf("equipment", "Equipamentos"),
+        leaf("materials", "Materiais"),
+        leaf("environment", "Ambiente"),
+        leaf("management", "Gestão"),
       ]),
   },
   {
     id: "okrs",
     name: "OKRs",
     build: () =>
-      doc("Objective", [
-        leaf("kr1", "Key result 1"),
-        leaf("kr2", "Key result 2"),
-        leaf("kr3", "Key result 3"),
-        leaf("initiatives", "Initiatives"),
+      doc("Objetivo", [
+        leaf("kr1", "Resultado-chave 1"),
+        leaf("kr2", "Resultado-chave 2"),
+        leaf("kr3", "Resultado-chave 3"),
+        leaf("initiatives", "Iniciativas"),
       ]),
   },
   {
     id: "essay",
-    name: "Essay outline",
+    name: "Estrutura de texto",
     build: () =>
-      doc("Essay", [
-        leaf("thesis", "Thesis"),
-        leaf("intro", "Introduction"),
-        leaf("p1", "Point 1"),
-        leaf("p2", "Point 2"),
-        leaf("p3", "Point 3"),
-        leaf("counter", "Counterpoint"),
-        leaf("conclusion", "Conclusion"),
+      doc("Texto", [
+        leaf("thesis", "Tese"),
+        leaf("intro", "Introdução"),
+        leaf("p1", "Ponto 1"),
+        leaf("p2", "Ponto 2"),
+        leaf("p3", "Ponto 3"),
+        leaf("counter", "Contraponto"),
+        leaf("conclusion", "Conclusão"),
       ]),
   },
   {
     id: "presentation",
-    name: "Presentation outline",
+    name: "Estrutura de apresentação",
     build: () =>
-      doc("Presentation", [
-        leaf("hook", "Hook"),
-        leaf("message", "Core message"),
-        leaf("pt1", "Point 1"),
-        leaf("pt2", "Point 2"),
-        leaf("pt3", "Point 3"),
-        leaf("cta", "Call to action"),
+      doc("Apresentação", [
+        leaf("hook", "Gancho"),
+        leaf("message", "Mensagem principal"),
+        leaf("pt1", "Ponto 1"),
+        leaf("pt2", "Ponto 2"),
+        leaf("pt3", "Ponto 3"),
+        leaf("cta", "Chamada para ação"),
       ]),
   },
   {
@@ -212,15 +212,15 @@ export const templates: MapTemplate[] = [
     name: "Lean Canvas",
     build: () =>
       doc("Lean Canvas", [
-        leaf("problem", "Problem"),
-        leaf("solution", "Solution"),
-        leaf("uvp", "Unique value proposition"),
-        leaf("customers", "Customer segments"),
-        leaf("channels", "Channels"),
-        leaf("revenue", "Revenue streams"),
-        leaf("costs", "Cost structure"),
-        leaf("metrics", "Key metrics"),
-        leaf("advantage", "Unfair advantage"),
+        leaf("problem", "Problema"),
+        leaf("solution", "Solução"),
+        leaf("uvp", "Proposta única de valor"),
+        leaf("customers", "Segmentos de clientes"),
+        leaf("channels", "Canais"),
+        leaf("revenue", "Fontes de receita"),
+        leaf("costs", "Estrutura de custos"),
+        leaf("metrics", "Métricas-chave"),
+        leaf("advantage", "Vantagem difícil de copiar"),
       ]),
   },
   {
@@ -228,32 +228,32 @@ export const templates: MapTemplate[] = [
     name: "Persona",
     build: () =>
       doc("Persona", [
-        leaf("goals", "Goals"),
-        leaf("pains", "Pains"),
-        leaf("behaviours", "Behaviours"),
-        leaf("context", "Context"),
-        leaf("quote", "Quote"),
+        leaf("goals", "Objetivos"),
+        leaf("pains", "Dores"),
+        leaf("behaviours", "Comportamentos"),
+        leaf("context", "Contexto"),
+        leaf("quote", "Citação"),
       ]),
   },
 ];
 
 /** One-line use-case shown on the Start-screen template cards (keyed by template id). */
 export const TEMPLATE_DESCRIPTIONS: Record<string, string> = {
-  brainstorm: "Open an idea from every angle — the five W's and How.",
-  swot: "Weigh strengths, weaknesses, opportunities and threats.",
-  project: "Frame a project: goals, scope, milestones, risks, team.",
-  "five-whys": "Drill from a symptom to its root cause, five whys deep.",
-  decision: "Compare options by pros, cons and criteria to decide.",
-  retrospective: "Reflect on what to start, stop and continue.",
-  meeting: "Capture agenda, decisions and action items together.",
-  "pre-mortem": "Imagine the project failed, then prevent it up front.",
-  pestle: "Scan the macro landscape, political to environmental.",
-  fishbone: "Trace an effect back to its causes across the six M's.",
-  okrs: "Set an objective with measurable key results.",
-  essay: "Outline an argument from thesis to conclusion.",
-  presentation: "Structure a talk from hook to call to action.",
-  "lean-canvas": "Sketch a whole business model on one page.",
-  persona: "Profile a user's goals, pains and behaviours.",
+  brainstorm: "Explore uma ideia por todos os ângulos: quem, o quê, por quê, como, quando e onde.",
+  swot: "Analise forças, fraquezas, oportunidades e ameaças.",
+  project: "Estruture um projeto com objetivos, escopo, marcos, riscos e equipe.",
+  "five-whys": "Investigue um problema até chegar à causa raiz com os 5 Porquês.",
+  decision: "Compare opções, prós, contras e critérios para tomar uma decisão.",
+  retrospective: "Reflita sobre o que começar, parar e continuar fazendo.",
+  meeting: "Organize pauta, decisões, participantes e itens de ação em um só lugar.",
+  "pre-mortem": "Imagine que o projeto deu errado e antecipe como evitar esse cenário.",
+  pestle: "Analise o ambiente externo nos fatores político, econômico, social, tecnológico, legal e ambiental.",
+  fishbone: "Investigue as causas de um problema usando a estrutura de espinha de peixe.",
+  okrs: "Defina um objetivo acompanhado de resultados-chave mensuráveis.",
+  essay: "Estruture um texto da tese até a conclusão.",
+  presentation: "Estruture uma apresentação do gancho até a chamada para ação.",
+  "lean-canvas": "Estruture um modelo de negócio completo em uma única página.",
+  persona: "Organize objetivos, dores, comportamentos e contexto de uma persona.",
 };
 
 export function buildTemplate(id: string): MindMapDoc {

@@ -60,6 +60,11 @@ export const CORE_PT_BR = {
 
   "toolbar.find": "Buscar",
   "toolbar.newMenu": "+ Novo…",
+  "toolbar.allMaps": "Todos os mapas",
+  "toolbar.recent": "Recentes",
+  "toolbar.templates": "Modelos",
+  "toolbar.examples": "Exemplos",
+  "toolbar.layout": "Layout",
 
   "app.showAllEsc": "Mostrar tudo (Esc)",
   "app.exitEsc": "Sair (Esc)",
