@@ -2,6 +2,7 @@ import { t } from "../../i18n/registry";
 import "./messages";
 import { type ReactNode, useEffect, useState } from "react";
 import { InstallButton } from "../InstallButton";
+import { useAuth } from "../../auth/AuthProvider";
 import { ACCENT } from "./tokens";
 import type { StartSection } from "./types";
 
@@ -207,6 +208,7 @@ export function StartSidebar({
   // Narrow widths collapse the section nav into a slide-in drawer behind a hamburger; this state is
   // inert on desktop (the drawer styles only apply ≤640px, where the toggle is shown).
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { user, signOut } = useAuth();
   useEffect(() => {
     if (!drawerOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -266,6 +268,48 @@ export function StartSidebar({
         ))}
       </div>
       <InstallButton className="st-install" />
+
+      <div
+        style={{
+          marginTop: "auto",
+          padding: "12px 14px",
+          borderTop: "1px solid var(--st-border)",
+        }}
+      >
+        {user?.email ? (
+          <div
+            style={{
+              fontSize: 12,
+              color: "var(--st-muted)",
+              marginBottom: 8,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "nowrap",
+            }}
+            title={user.email}
+          >
+            {user.email}
+          </div>
+        ) : null}
+
+        <button
+          type="button"
+          onClick={() => void signOut()}
+          style={{
+            width: "100%",
+            border: "1px solid var(--st-border)",
+            background: "var(--st-card)",
+            color: "var(--st-ink)",
+            borderRadius: 10,
+            padding: "10px 12px",
+            cursor: "pointer",
+            fontWeight: 600,
+          }}
+        >
+          Sair da conta
+        </button>
+      </div>
+
       <div className="st-foot">
         <span aria-hidden="true">🔒</span>
         <span>{t("start.localAndPrivate")}</span>
