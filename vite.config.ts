@@ -143,7 +143,7 @@ function cspPlugin(): Plugin {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self' data:",
-    "connect-src 'self'",
+    "connect-src 'self' https://xwpomlvbjndjuxqqetga.supabase.co wss://xwpomlvbjndjuxqqetga.supabase.co",
     "worker-src 'self' blob:",
     "manifest-src 'self'",
     "object-src 'none'",
