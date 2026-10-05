@@ -21,16 +21,16 @@ import { useLibrary } from "./useLibrary";
 import "./start.css";
 
 const TITLES: Record<StartSection, string> = {
-  start: "Start",
-  all: "All maps",
-  recent: "Recent",
-  templates: "Templates",
-  examples: "Examples",
+  start: "Começar",
+  all: "Todos os mapas",
+  recent: "Recentes",
+  templates: "Modelos",
+  examples: "Exemplos",
   layouts: "Layouts",
-  import: "Import",
-  learn: "Learn mind mapping",
-  about: "About",
-  trash: "Trash",
+  import: "Importar",
+  learn: "Aprenda a criar mapas mentais",
+  about: "Sobre",
+  trash: "Lixeira",
 };
 
 export function StartScreen({
