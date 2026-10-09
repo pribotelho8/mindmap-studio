@@ -9,21 +9,19 @@ export const ACCENT = "#0B2F63";
 export const ACCENT_HOVER = "#08254E";
 
 export const GOLD = "#C49338";
-export const CREAM = "#F8F1E7";
+export const CREAM = "#FCFAF6";
 
 /** Build the `--st-*` custom properties for the .start root from the resolved app appearance. */
 export function startThemeVars(dark: boolean): CSSProperties {
-  const page = dark ? "#111B2B" : "#F8F1E7";
-  const card = dark ? "#182538" : "#FFFCF7";
+  const page = dark ? "#111B2B" : "#FCFAF6";
+  const card = dark ? "#182538" : "#FCFAF6";
   const ink = dark ? "#F4EEE6" : "#14243A";
 
   return {
     "--st-page": page,
     "--st-card": card,
 
-    "--st-sidebar": dark
-      ? "#0B1728"
-      : "#F3E9DC",
+    "--st-sidebar": dark ? "#0B1728" : "#FCFAF6",
 
     "--st-border": dark
       ? "rgba(196,147,56,0.22)"

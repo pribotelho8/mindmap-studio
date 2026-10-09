@@ -89,7 +89,7 @@ export function ShareMapButton({ mapId }: { mapId: string }) {
         onClick={() => setOpen((value) => !value)}
         style={{
           border: "1px solid #E3D4C1",
-          background: "#FFFCF7",
+          background: "#FCFAF6",
           color: "#0B2F63",
           borderRadius: 10,
           padding: "9px 14px",
@@ -112,7 +112,7 @@ export function ShareMapButton({ mapId }: { mapId: string }) {
             padding: 18,
             borderRadius: 14,
             border: "1px solid #E3D4C1",
-            background: "#FFFCF7",
+            background: "#FCFAF6",
             boxShadow: "0 18px 50px rgba(20,36,58,0.16)",
             color: "#14243A",
           }}

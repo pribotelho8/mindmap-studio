@@ -33,8 +33,8 @@ export const EDITOR_FONT_MONO = '"JetBrains Mono", ui-monospace, SFMono-Regular,
  *  so the chrome can be dark over a light canvas and vice-versa. Chrome surfaces are neutral light/dark
  *  values; the emerald accent is constant. Consumed by editor.css + the redesigned chrome components. */
 export function editorThemeVars(dark: boolean, highContrast = false): CSSProperties {
-  const page = dark ? "#111B2B" : "#F8F1E7";
-  const card = dark ? "#182538" : "#FFFCF7";
+  const page = dark ? "#111B2B" : "#FCFAF6";
+  const card = dark ? "#182538" : "#FCFAF6";
   const ink = dark ? "#F4EEE6" : "#14243A";
   // High-contrast mode (OS `prefers-contrast: more` / `forced-colors`, or the explicit toggle): push
   // the neutral chrome tokens to their extremes so borders, dividers and secondary text stop being
@@ -44,7 +44,7 @@ export function editorThemeVars(dark: boolean, highContrast = false): CSSPropert
     return {
       "--ed-page": page,
       "--ed-card": card,
-      "--ed-sidebar": dark ? "#0e0e14" : "#f0eee7",
+      "--ed-sidebar": dark ? "#0e0e14" : "#FCFAF6",
       "--ed-border": dark ? "#ffffff" : "#000000",
       "--ed-divider": dark ? "#e6e6e6" : "#111111",
       "--ed-ink": dark ? "#ffffff" : "#000000",
@@ -79,7 +79,7 @@ export function editorThemeVars(dark: boolean, highContrast = false): CSSPropert
   return {
     "--ed-page": page,
     "--ed-card": card,
-    "--ed-sidebar": dark ? "#0B1728" : "#F3E9DC",
+    "--ed-sidebar": dark ? "#0B1728" : "#FCFAF6",
     "--ed-border": dark ? "rgba(196,147,56,0.22)" : "#E3D4C1",
     "--ed-divider": dark ? "rgba(255,255,255,0.07)" : "#EDE2D4",
     "--ed-ink": ink,

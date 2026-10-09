@@ -44,7 +44,7 @@ export function PublicMapPage({ slug }: { slug: string }) {
           display: "grid",
           placeItems: "center",
           fontFamily: "Inter, system-ui, sans-serif",
-          background: "#F8F1E7",
+          background: "#FCFAF6",
           color: "#14243A",
         }}
       >
@@ -61,7 +61,7 @@ export function PublicMapPage({ slug }: { slug: string }) {
           display: "grid",
           placeItems: "center",
           fontFamily: "Inter, system-ui, sans-serif",
-          background: "#F8F1E7",
+          background: "#FCFAF6",
           color: "#14243A",
           padding: 24,
           textAlign: "center",
@@ -81,7 +81,7 @@ export function PublicMapPage({ slug }: { slug: string }) {
         height: "100vh",
         display: "grid",
         gridTemplateRows: "58px 1fr",
-        background: "#F8F1E7",
+        background: "#FCFAF6",
         fontFamily: "Inter, system-ui, sans-serif",
       }}
     >
@@ -93,7 +93,7 @@ export function PublicMapPage({ slug }: { slug: string }) {
           gap: 16,
           padding: "0 20px",
           borderBottom: "1px solid #E3D4C1",
-          background: "#FFFCF7",
+          background: "#FCFAF6",
           color: "#14243A",
         }}
       >

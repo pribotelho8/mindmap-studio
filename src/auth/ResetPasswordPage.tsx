@@ -55,7 +55,7 @@ export function ResetPasswordPage() {
         minHeight: "100vh",
         display: "grid",
         placeItems: "center",
-        background: "#f6f7f9",
+        background: "#FCFAF6",
         fontFamily: "Inter, system-ui, sans-serif",
       }}
     >
@@ -63,7 +63,7 @@ export function ResetPasswordPage() {
         onSubmit={handleSubmit}
         style={{
           width: "min(420px, calc(100vw - 32px))",
-          background: "#FFFCF7",
+          background: "#FCFAF6",
           padding: 32,
           borderRadius: 18,
           boxShadow: "0 20px 60px rgba(55,38,18,0.10)",
