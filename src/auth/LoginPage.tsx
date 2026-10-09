@@ -4,7 +4,7 @@ import { supabase } from "../lib/supabase";
 export function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [mode, setMode] = useState<"login" | "signup">("login");
+  const [mode, setMode] = useState<"login" | "signup" | "forgot">("login");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -14,6 +14,19 @@ export function LoginPage() {
     setLoading(true);
 
     try {
+      if (mode === "forgot") {
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/`,
+        });
+
+        if (error) throw error;
+
+        setMessage(
+          "Enviamos um link de recuperação para seu e-mail. Abra o link para criar uma nova senha.",
+        );
+        return;
+      }
+
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
           email,
@@ -35,7 +48,7 @@ export function LoginPage() {
       }
     } catch (error) {
       setMessage(
-        error instanceof Error ? error.message : "Não foi possível autenticar.",
+        error instanceof Error ? error.message : "Não foi possível continuar.",
       );
     } finally {
       setLoading(false);
@@ -74,9 +87,11 @@ export function LoginPage() {
         </h1>
 
         <p style={{ color: "#676159", marginBottom: 24 }}>
-          {mode === "login"
-            ? "Entre para acessar seus mapas."
-            : "Crie sua conta para salvar seus mapas na nuvem."}
+          {mode === "forgot"
+            ? "Informe seu e-mail para recuperar sua senha."
+            : mode === "login"
+              ? "Entre para acessar seus mapas."
+              : "Crie sua conta para salvar seus mapas na nuvem."}
         </p>
 
         <input
@@ -95,22 +110,24 @@ export function LoginPage() {
           }}
         />
 
-        <input
-          type="password"
-          placeholder="Senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          minLength={6}
-          style={{
-            width: "100%",
-            boxSizing: "border-box",
-            padding: 12,
-            marginBottom: 16,
-            border: "1px solid #E3D4C1",
-            borderRadius: 10,
-          }}
-        />
+        {mode !== "forgot" ? (
+          <input
+            type="password"
+            placeholder="Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            minLength={6}
+            style={{
+              width: "100%",
+              boxSizing: "border-box",
+              padding: 12,
+              marginBottom: 16,
+              border: "1px solid #E3D4C1",
+              borderRadius: 10,
+            }}
+          />
+        ) : null}
 
         <button
           type="submit"
@@ -127,33 +144,79 @@ export function LoginPage() {
         >
           {loading
             ? "Aguarde..."
-            : mode === "login"
-              ? "Entrar"
-              : "Criar conta"}
+            : mode === "forgot"
+              ? "Enviar link de recuperação"
+              : mode === "login"
+                ? "Entrar"
+                : "Criar conta"}
         </button>
 
         {message && (
           <p style={{ marginTop: 16, color: "#49566A" }}>{message}</p>
         )}
 
-        <button
-          type="button"
-          onClick={() =>
-            setMode((current) => (current === "login" ? "signup" : "login"))
-          }
-          style={{
-            width: "100%",
-            marginTop: 16,
-            border: 0,
-            background: "transparent",
-            cursor: "pointer",
-            textDecoration: "underline",
-          }}
-        >
-          {mode === "login"
-            ? "Ainda não tenho conta"
-            : "Já tenho uma conta"}
-        </button>
+        {mode === "login" ? (
+          <button
+            type="button"
+            onClick={() => {
+              setMessage("");
+              setMode("forgot");
+            }}
+            style={{
+              width: "100%",
+              marginTop: 16,
+              border: 0,
+              background: "transparent",
+              color: "#0B2F63",
+              cursor: "pointer",
+              textDecoration: "underline",
+            }}
+          >
+            Esqueci minha senha
+          </button>
+        ) : null}
+
+        {mode === "forgot" ? (
+          <button
+            type="button"
+            onClick={() => {
+              setMessage("");
+              setMode("login");
+            }}
+            style={{
+              width: "100%",
+              marginTop: 16,
+              border: 0,
+              background: "transparent",
+              cursor: "pointer",
+              textDecoration: "underline",
+            }}
+          >
+            Voltar para o login
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => {
+              setMessage("");
+              setMode((current) =>
+                current === "login" ? "signup" : "login",
+              );
+            }}
+            style={{
+              width: "100%",
+              marginTop: 16,
+              border: 0,
+              background: "transparent",
+              cursor: "pointer",
+              textDecoration: "underline",
+            }}
+          >
+            {mode === "login"
+              ? "Ainda não tenho conta"
+              : "Já tenho uma conta"}
+          </button>
+        )}
       </form>
     </main>
   );
