@@ -1,5 +1,6 @@
-import type { MindMapDoc } from "../model/types";
 import { supabase } from "../lib/supabase";
+import type { MindMapDoc } from "../model/types";
+import { LEGACY_PUBLIC_ID, validatePublicName } from "./publicLink";
 
 async function currentUserId(): Promise<string> {
   const {
@@ -23,9 +24,7 @@ export async function saveMapToCloud(doc: MindMapDoc): Promise<void> {
       title: doc.title,
       content: doc,
       version: 1,
-      deleted_at: doc.meta?.trashedAt
-        ? new Date(doc.meta.trashedAt).toISOString()
-        : null,
+      deleted_at: doc.meta?.trashedAt ? new Date(doc.meta.trashedAt).toISOString() : null,
     },
     {
       onConflict: "id",
@@ -35,20 +34,12 @@ export async function saveMapToCloud(doc: MindMapDoc): Promise<void> {
   if (error) throw error;
 }
 
-export async function loadMapFromCloud(
-  id: string,
-): Promise<MindMapDoc | null> {
-  const { data, error } = await supabase
-    .from("maps")
-    .select("content")
-    .eq("id", id)
-    .maybeSingle();
+export async function loadMapFromCloud(id: string): Promise<MindMapDoc | null> {
+  const { data, error } = await supabase.from("maps").select("content").eq("id", id).maybeSingle();
 
   if (error) throw error;
 
-  return data?.content
-    ? (data.content as unknown as MindMapDoc)
-    : null;
+  return data?.content ? (data.content as unknown as MindMapDoc) : null;
 }
 
 export async function listMapsFromCloud(): Promise<MindMapDoc[]> {
@@ -60,14 +51,10 @@ export async function listMapsFromCloud(): Promise<MindMapDoc[]> {
 
   if (error) throw error;
 
-  return (data ?? []).map(
-    (row) => row.content as unknown as MindMapDoc,
-  );
+  return (data ?? []).map((row) => row.content as unknown as MindMapDoc);
 }
 
-export async function softDeleteMapFromCloud(
-  id: string,
-): Promise<void> {
+export async function softDeleteMapFromCloud(id: string): Promise<void> {
   const { error } = await supabase
     .from("maps")
     .update({
@@ -89,13 +76,8 @@ export async function restoreMapInCloud(id: string): Promise<void> {
   if (error) throw error;
 }
 
-export async function permanentlyDeleteMapFromCloud(
-  id: string,
-): Promise<void> {
-  const { error } = await supabase
-    .from("maps")
-    .delete()
-    .eq("id", id);
+export async function permanentlyDeleteMapFromCloud(id: string): Promise<void> {
+  const { error } = await supabase.from("maps").delete().eq("id", id);
 
   if (error) throw error;
 }
@@ -103,14 +85,13 @@ export async function permanentlyDeleteMapFromCloud(
 export interface PublicMapShare {
   isPublic: boolean;
   publicSlug: string;
+  customPublicSlug: string;
 }
 
-export async function getPublicMapShare(
-  id: string,
-): Promise<PublicMapShare> {
+export async function getPublicMapShare(id: string): Promise<PublicMapShare> {
   const { data, error } = await supabase
     .from("maps")
-    .select("is_public, public_slug")
+    .select("is_public, public_slug, custom_public_slug")
     .eq("id", id)
     .single();
 
@@ -119,17 +100,16 @@ export async function getPublicMapShare(
   return {
     isPublic: Boolean(data.is_public),
     publicSlug: String(data.public_slug),
+    customPublicSlug: data.custom_public_slug ?? "",
   };
 }
 
-export async function enablePublicMap(
-  id: string,
-): Promise<PublicMapShare> {
+export async function enablePublicMap(id: string): Promise<PublicMapShare> {
   const { data, error } = await supabase
     .from("maps")
     .update({ is_public: true })
     .eq("id", id)
-    .select("is_public, public_slug")
+    .select("is_public, public_slug, custom_public_slug")
     .single();
 
   if (error) throw error;
@@ -137,32 +117,41 @@ export async function enablePublicMap(
   return {
     isPublic: true,
     publicSlug: String(data.public_slug),
+    customPublicSlug: data.custom_public_slug ?? "",
   };
 }
 
 export async function disablePublicMap(id: string): Promise<void> {
-  const { error } = await supabase
-    .from("maps")
-    .update({ is_public: false })
-    .eq("id", id);
+  const { error } = await supabase.from("maps").update({ is_public: false }).eq("id", id);
 
   if (error) throw error;
 }
 
-export async function loadPublicMap(
-  publicSlug: string,
-): Promise<MindMapDoc | null> {
+export async function setCustomPublicName(id: string, value: string): Promise<string> {
+  const name = value.trim() ? validatePublicName(value) : null;
+  const userId = await currentUserId();
+  const { data, error } = await supabase
+    .from("maps")
+    .update({ custom_public_slug: name })
+    .eq("id", id)
+    .eq("user_id", userId)
+    .select("custom_public_slug")
+    .single();
+  if (error?.code === "23505") throw new Error("Este nome já está em uso. Escolha outro.");
+  if (error) throw new Error("Não foi possível salvar o nome do link. Tente novamente.");
+  return data.custom_public_slug ?? "";
+}
+
+export async function loadPublicMap(publicSlug: string): Promise<MindMapDoc | null> {
   const { data, error } = await supabase
     .from("maps")
     .select("content")
-    .eq("public_slug", publicSlug)
+    .eq(LEGACY_PUBLIC_ID.test(publicSlug) ? "public_slug" : "custom_public_slug", publicSlug)
     .eq("is_public", true)
     .is("deleted_at", null)
     .maybeSingle();
 
   if (error) throw error;
 
-  return data?.content
-    ? (data.content as unknown as MindMapDoc)
-    : null;
+  return data?.content ? (data.content as unknown as MindMapDoc) : null;
 }

@@ -3,12 +3,15 @@ import {
   disablePublicMap,
   enablePublicMap,
   getPublicMapShare,
+  setCustomPublicName,
 } from "../cloud/mapCloudStore";
 
 export function ShareMapButton({ mapId }: { mapId: string }) {
   const [open, setOpen] = useState(false);
   const [isPublic, setIsPublic] = useState(false);
   const [slug, setSlug] = useState("");
+  const [customSlug, setCustomSlug] = useState("");
+  const [nameDraft, setNameDraft] = useState("");
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -20,6 +23,8 @@ export function ShareMapButton({ mapId }: { mapId: string }) {
         if (!active) return;
         setIsPublic(share.isPublic);
         setSlug(share.publicSlug);
+        setCustomSlug(share.customPublicSlug);
+        setNameDraft(share.customPublicSlug);
       })
       .catch(() => {});
 
@@ -29,7 +34,7 @@ export function ShareMapButton({ mapId }: { mapId: string }) {
   }, [mapId]);
 
   const publicUrl = slug
-    ? `${window.location.origin}/?public=${slug}`
+    ? `${window.location.origin}/?public=${encodeURIComponent(customSlug || slug)}`
     : "";
 
   async function makePublic() {
@@ -40,6 +45,8 @@ export function ShareMapButton({ mapId }: { mapId: string }) {
       const share = await enablePublicMap(mapId);
       setIsPublic(true);
       setSlug(share.publicSlug);
+      setCustomSlug(share.customPublicSlug);
+      setNameDraft(share.customPublicSlug);
       setMessage("Mapa publicado com sucesso.");
     } catch {
       setMessage("Não foi possível publicar o mapa.");
@@ -56,6 +63,21 @@ export function ShareMapButton({ mapId }: { mapId: string }) {
       setMessage("Link copiado ✓");
     } catch {
       setMessage("Não foi possível copiar o link.");
+    }
+  }
+
+  async function saveName() {
+    setLoading(true);
+    setMessage("");
+    try {
+      const name = await setCustomPublicName(mapId, nameDraft);
+      setCustomSlug(name);
+      setNameDraft(name);
+      setMessage("Link atualizado. O link original continua funcionando.");
+    } catch (error) {
+      setMessage(error instanceof Error ? error.message : "Não foi possível salvar o link.");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -133,6 +155,38 @@ export function ShareMapButton({ mapId }: { mapId: string }) {
 
           {isPublic ? (
             <>
+              <label htmlFor={`public-name-${mapId}`} style={{ fontSize: 13, fontWeight: 700 }}>
+                Personalizar link
+              </label>
+              <input
+                id={`public-name-${mapId}`}
+                value={nameDraft}
+                onChange={(event) => setNameDraft(event.target.value)}
+                placeholder="proposta-estrategica"
+                maxLength={64}
+                disabled={loading}
+                aria-describedby={`public-name-help-${mapId}`}
+                style={{
+                  width: "100%",
+                  boxSizing: "border-box",
+                  padding: 10,
+                  marginTop: 6,
+                  borderRadius: 8,
+                  border: "1px solid #E3D4C1",
+                }}
+              />
+              <p id={`public-name-help-${mapId}`} style={{ fontSize: 12 }}>
+                Use letras sem acentos, números e hífens. Deixe vazio para usar o link original. Ao
+                trocar o nome, o endereço personalizado anterior deixa de funcionar.
+              </p>
+              <button
+                type="button"
+                disabled={loading || nameDraft === customSlug}
+                onClick={() => void saveName()}
+                style={{ padding: 9, marginBottom: 12 }}
+              >
+                {loading ? "Salvando..." : "Salvar nome do link"}
+              </button>
               <input
                 value={publicUrl}
                 readOnly
@@ -201,7 +255,7 @@ export function ShareMapButton({ mapId }: { mapId: string }) {
           )}
 
           {message ? (
-            <p
+            <output
               style={{
                 fontSize: 12,
                 marginBottom: 0,
@@ -209,7 +263,7 @@ export function ShareMapButton({ mapId }: { mapId: string }) {
               }}
             >
               {message}
-            </p>
+            </output>
           ) : null}
         </div>
       ) : null}
