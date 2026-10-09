@@ -43,6 +43,7 @@ import { MobileSheetScrim } from "./components/MobileSheetScrim";
 import { OverlayInspector } from "./components/OverlayInspector";
 import { type DockEntry, PanelDock } from "./components/PanelDock";
 import { SearchResults } from "./components/SearchResults";
+import { ShareMapButton } from "./components/ShareMapButton";
 import { SettingsDialog } from "./components/SettingsDialog";
 import { ShortcutsDialog } from "./components/ShortcutsDialog";
 import { ToastBar } from "./components/ToastBar";
@@ -2229,6 +2230,7 @@ export function App() {
           </div>
           <div style={{ flex: 1, minHeight: 0, display: "flex", flexDirection: "column" }}>
             <div style={{ flex: 1, minHeight: 0, position: "relative" }}>
+              <ShareMapButton mapId={doc.id} />
               <MindMap
                 key={playback ? `pb:${playback.index}` : `${doc.id}:${restoreRev}`}
                 ref={mapRef}

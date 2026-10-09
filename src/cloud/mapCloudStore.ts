@@ -99,3 +99,70 @@ export async function permanentlyDeleteMapFromCloud(
 
   if (error) throw error;
 }
+
+export interface PublicMapShare {
+  isPublic: boolean;
+  publicSlug: string;
+}
+
+export async function getPublicMapShare(
+  id: string,
+): Promise<PublicMapShare> {
+  const { data, error } = await supabase
+    .from("maps")
+    .select("is_public, public_slug")
+    .eq("id", id)
+    .single();
+
+  if (error) throw error;
+
+  return {
+    isPublic: Boolean(data.is_public),
+    publicSlug: String(data.public_slug),
+  };
+}
+
+export async function enablePublicMap(
+  id: string,
+): Promise<PublicMapShare> {
+  const { data, error } = await supabase
+    .from("maps")
+    .update({ is_public: true })
+    .eq("id", id)
+    .select("is_public, public_slug")
+    .single();
+
+  if (error) throw error;
+
+  return {
+    isPublic: true,
+    publicSlug: String(data.public_slug),
+  };
+}
+
+export async function disablePublicMap(id: string): Promise<void> {
+  const { error } = await supabase
+    .from("maps")
+    .update({ is_public: false })
+    .eq("id", id);
+
+  if (error) throw error;
+}
+
+export async function loadPublicMap(
+  publicSlug: string,
+): Promise<MindMapDoc | null> {
+  const { data, error } = await supabase
+    .from("maps")
+    .select("content")
+    .eq("public_slug", publicSlug)
+    .eq("is_public", true)
+    .is("deleted_at", null)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  return data?.content
+    ? (data.content as unknown as MindMapDoc)
+    : null;
+}
